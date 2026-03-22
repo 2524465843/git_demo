@@ -1,0 +1,89 @@
+//本地仓库的创建
+处于robot@WP:~/A/git_demo$ git init
+1. git init   初始化
+2. 这个就是一个本地仓库  我是index.html文件
+3. git status 查看文件状态
+4. git add index.html  添加需要管理的文件名字  作用添加添加到暂存区中
+//清除暂存区（unstage） # 取消所有已暂存的文件git reset    # 取消特定文件的暂存git reset HEAD <文件名>  
+5. git commit -m 程序员第一次提交      添加到git 仓库之中    至此本地仓库已经完成了
+//需要的操作为：Git 每次提交都会记录作者（author）和提交者（committer）的信息，包括：
+方案一：全局配置（推荐）
+git config --global user.name "你的名字"                      ********
+git config --global user.email "你的邮箱@example.com"         *********@qq.com
+
+
+//远程仓库的创建
+1. +   new repositiory  // 远程仓库建立完毕
+
+
+//本地仓库推送至远程仓库
+1.远程仓库的地址：https://github.com/********/git_demo.git
+2.使用已经用的本地仓库直接推送即可
+3.git push https://github.com/*******/git_demo.git master    master位置为推送的分支名称
+// GitHub 在 2021 年 8 月 13 日后，不再支持使用密码进行 Git 操作认证，必须使用个人访问令牌（Personal Access Token）或 SSH 密钥。
+方案一：使用个人访问令牌（推荐）
+    生成 GitHub 个人访问令牌：
+        登录 GitHub
+        点击右上角头像 → Settings → Developer settings → Personal access tokens → Tokens (classic)
+        点击 Generate new token → Generate new token (classic)
+        设置令牌名称（如 "git-push"）
+        设置过期时间（建议 90 天或自定义）
+        选择权限（至少勾选 repo 完整控制权）
+        点击 Generate token
+        重要：复制生成的令牌（只显示一次）
+    使用令牌推送：
+    git push https://github.com/************/git_demo.git master
+    Username: 输入 *********（你的 GitHub 用户名）
+    Password: 粘贴刚才生成的令牌（不是 GitHub 登录密码）       这个************   //这个才是
+4.git status  你会发现add 添加到缓存和 commit本地仓库   都已经由于提交而没有了 
+    
+//给远程仓库取别名
+1.git remote add origin https://github.com/*********/git_demo.git   //别名为origin
+2. 之后重复第一次操作，可以提交修改后的文件了
+3. 在最后一部 git push -u origin master    -u 执行了一次   下一次 直接  git push 即可  因为他已经记住了
+
+
+问题在于：敏感信息在提交历史中，不在当前文件里
+即使你现在已经删除了文件中的敏感信息，但那个包含令牌的提交（a9ec2d0）已经存在于你的本地 Git 历史中，当你推送时，Git 会把这个提交（包括其中的敏感信息）一起推送到远程。
+
+# 查看提交历史，找到包含敏感信息的提交
+git log --oneline
+# 查看具体提交的内容
+git show a9ec2d0      //这个可以看到
+
+//修复方法
+# 查看所有提交
+git log --oneline
+791624b (HEAD -> master) 程序员第二次提交
+a9ec2d0 程序员第一次提交（包含令牌）
+
+第三步：重置到问题提交之前
+# 重置到第一次提交之前（如果只有这两次提交）
+# 这会删除所有提交记录，但保留工作目录的文件
+git reset --soft a9ec2d0^               //这一不就ok  其他的commit 就全部都没有
+# 如果 a9ec2d0^ 无效，使用：
+git reset --soft HEAD~2
+
+问题：add commit push 三者的关系  以及  为什么会存在提交历史  而且一旦提交出现了问题，下次在此提交就不会生效？
+
+
+
+//多人协同
+1.发送链接 setting collaborators 帐号  发链接   B点击链接   之后  对于 git push origin master  也在克隆里面包含了 直接用即可
+
+
+
+
+
+//A：创建者  拉取远程仓库中最新的版本     拉取操作数据读取操作，不需要认证的
+1.git pull 运程仓库地址 分支名称     //这个分支名称有点不太理解   master brach   //git  是在有本地仓库的基础上进行拉取最新的坂本
+
+
+问题： pull 和clone  的具体区别：
+1.pull  是在clone的基础上进行的   拉取远程仓库的最新版本(原程仓库和本地仓库的版本进行比较)   他是一个读取的操作
+2.就是一个从无到有的操作
+
+
+
+远程本版和本地版本如何查看 
+
